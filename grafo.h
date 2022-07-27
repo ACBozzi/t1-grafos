@@ -35,50 +35,50 @@ int n_vertices(grafo g);
 int n_arestas(grafo g);
 
 
-// -----------------------------------------------------------------------------
-// devolve o grau do vértice v em g
+// // -----------------------------------------------------------------------------
+// // devolve o grau do vértice v em g
 
-int grau(vertice v, grafo g);
+// int grau(vertice v, grafo g);
 
-// -----------------------------------------------------------------------------
-// devolve o grau máximo de g
+// // -----------------------------------------------------------------------------
+// // devolve o grau máximo de g
 
-int grau_maximo(grafo g);
+// int grau_maximo(grafo g);
 
-// -----------------------------------------------------------------------------
-// devolve o grau mínimo de g
+// // -----------------------------------------------------------------------------
+// // devolve o grau mínimo de g
 
-int grau_minimo(grafo g);
+// int grau_minimo(grafo g);
 
-// -----------------------------------------------------------------------------
-// devolve o grau médio de g
+// // -----------------------------------------------------------------------------
+// // devolve o grau médio de g
 
-int grau_medio(grafo g);
+// int grau_medio(grafo g);
 
-//------------------------------------------------------------------------------
-// devolve 1 se g é regular, ou 0 caso contrário
+// //------------------------------------------------------------------------------
+// // devolve 1 se g é regular, ou 0 caso contrário
 
-int regular(grafo g);
+// int regular(grafo g);
 
-//------------------------------------------------------------------------------
-// devolve 1 se g é completo, ou 0 caso contrário
+// //------------------------------------------------------------------------------
+// // devolve 1 se g é completo, ou 0 caso contrário
 
-int completo(grafo g);
+// int completo(grafo g);
 
-//------------------------------------------------------------------------------
-// devolve 1 se g é conexo, ou 0 caso contrário
+// //------------------------------------------------------------------------------
+// // devolve 1 se g é conexo, ou 0 caso contrário
 
-int conexo(grafo g);
+// int conexo(grafo g);
 
-//------------------------------------------------------------------------------
-// devolve 1 se g é bipartido, ou 0 caso contrário
+// //------------------------------------------------------------------------------
+// // devolve 1 se g é bipartido, ou 0 caso contrário
 
-int bipartido(grafo g);
+// int bipartido(grafo g);
 
-//------------------------------------------------------------------------------
-// devolve o número de triângulos (subgrafos completos de 3 vértices) em g
+// //------------------------------------------------------------------------------
+// // devolve o número de triângulos (subgrafos completos de 3 vértices) em g
 
-int n_triangulos(grafo g);
+// int n_triangulos(grafo g);
 
 //------------------------------------------------------------------------------
 // devolve uma matriz de adjacência de g onde as linhas/colunas
@@ -87,9 +87,9 @@ int n_triangulos(grafo g);
 
 int **matriz_adjacencia(grafo g);
 
-//------------------------------------------------------------------------------
-// devolve o grafo complementar a g
+// //------------------------------------------------------------------------------
+// // devolve o grafo complementar a g
 
-grafo complemento(grafo g);
+// grafo complemento(grafo g);
 
-#endif
+ #endif
