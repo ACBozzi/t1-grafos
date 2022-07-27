@@ -13,9 +13,11 @@ int main(void) {
   //destroi_grafo(g);
   //numero_vertices = n_vertices(g);
   //numero_arestas = n_arestas(g);
-  //grau = grau();
+  //grau = grau_maximo(g);
+  // grau = grau_minimo(g);
+  grau = grau_medio(g);
 
-  matriz_adjacencia(g);
+  //matriz_adjacencia(g);
 
 
   return 0;

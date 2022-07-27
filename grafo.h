@@ -40,20 +40,20 @@ int n_arestas(grafo g);
 
 // int grau(vertice v, grafo g);
 
-// // -----------------------------------------------------------------------------
-// // devolve o grau máximo de g
+// -----------------------------------------------------------------------------
+// devolve o grau máximo de g
 
-// int grau_maximo(grafo g);
+int grau_maximo(grafo g);
 
-// // -----------------------------------------------------------------------------
-// // devolve o grau mínimo de g
+// -----------------------------------------------------------------------------
+// devolve o grau mínimo de g
 
-// int grau_minimo(grafo g);
+int grau_minimo(grafo g);
 
-// // -----------------------------------------------------------------------------
-// // devolve o grau médio de g
+// -----------------------------------------------------------------------------
+// devolve o grau médio de g
 
-// int grau_medio(grafo g);
+int grau_medio(grafo g);
 
 // //------------------------------------------------------------------------------
 // // devolve 1 se g é regular, ou 0 caso contrário
