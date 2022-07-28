@@ -199,6 +199,9 @@ int grau_medio(grafo g)
 //   return 0;
 // }
 
+//-----------------------------------------------------------------------------
+//---------FUNÇÕES AUXILIARES PARA MATRIZ DE ADJANCÊNCIA-----------------------
+//-----------------------------------------------------------------------------
 int **aloca_matriz(int num)
 {
   int **matriz, linha, coluna;
@@ -261,9 +264,12 @@ void print_adj_m(int **m, int n, char **vertices)
     printf("\n");
   }
 }
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
-// // -----------------------------------------------------------------------------
-// //https://www.ime.usp.br/~pf/algoritmos_para_grafos/aulas/graphdatastructs.html#sec:adjmatrix
+// -----------------------------------------------------------------------------
+//https://www.ime.usp.br/~pf/algoritmos_para_grafos/aulas/graphdatastructs.html#sec:adjmatrix
 int **matriz_adjacencia(grafo g)
 {
   int num = n_vertices(g);
