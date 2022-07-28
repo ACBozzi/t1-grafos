@@ -87,8 +87,8 @@ int grau_medio(grafo g);
 
 int **matriz_adjacencia(grafo g);
 
-// //------------------------------------------------------------------------------
-// // devolve o grafo complementar a g
+//------------------------------------------------------------------------------
+// devolve o grafo complementar a g
 
 // grafo complemento(grafo g);
 

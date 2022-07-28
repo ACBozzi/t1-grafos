@@ -5,8 +5,19 @@
 
 // https://www.mankier.com/3/cgraph
 // https://www.graphviz.org/pdf/cgraph.pdf
+//https://www.ime.usp.br/~pf/algoritmos_para_grafos/aulas/graphdatastructs.html#sec:adjmatrix
+
+
+//-----------------------FUNÇÕES AUXILIARES--------------------------------------
+int **aloca_matriz(int num);
+int busca_posicao(char **v, char *value, int n);
+void print_v(int n, char **vertices);
+void print_adj_m(int **m, int n, char **vertices);
+//------------------------------------------------------------------------------
 
 // OK------------------------------------------------------------------------------
+// devolve o grafo lido da entrada padrão (formato dot)
+
 grafo le_grafo(void)
 {
   // FILE *stdin;
@@ -17,11 +28,11 @@ grafo le_grafo(void)
   // graph = malloc(sizeof (struct grafo));
   if (!graph)
   {
-    printf("Não foi possível alocar o grafo.\n");
+    printf("Não foi possível alocar o grafo...\n");
     return NULL;
   }
   else
-    printf("Alocado corretamente.\n\n");
+    //printf("Grafo alocado corretamente...\n\n");
 
   graph = agread(stdin, NULL);
 
@@ -31,21 +42,28 @@ grafo le_grafo(void)
 }
 
 // OK------------------------------------------------------------------------------
+// desaloca g
+
 void destroi_grafo(grafo g)
 {
   agclose(g);
   // free(g);
-  return 1;
+  //return 1;
 }
 
 // OK------------------------------------------------------------------------------
+// escreve g na saída padrão em formato dot
+// devolve g
+
 grafo escreve_grafo(grafo g)
 {
 
-  return agwrite(g, stdout);
+  agwrite(g, stdout);
+    return g;
 }
-
 // OK-----------------------------------------------------------------------------
+// devolve o número de vértices de g
+
 int n_vertices(grafo g)
 {
   int num_vert;
@@ -55,13 +73,15 @@ int n_vertices(grafo g)
 }
 
 // OK----------------------------------------------------------------------------
+// devolve o número de arestas do grafo
+
 int n_arestas(grafo g)
 {
   int num_aresta;
   num_aresta = agnedges(g);
   // printf("Número de arestas do grafo é: %d\n\n", num_aresta);
 
-  return 0;
+  return num_aresta;
 }
 
 // NÃO SOUBE TESTAR-----------------------------------------------------------------------------
@@ -81,78 +101,90 @@ int n_arestas(grafo g)
 // }
 
 // OK-----------------------------------------------------------------------------
+// devolve o grau máximo de g
+
 int grau_maximo(grafo g)
 {
 
-  Agnode_t *vertice;
+  Agnode_t *ver;
   int grau_maximo, grau;
 
   // percorrendo os vértices
   grau = 0;
   grau_maximo = 0;
-  for (vertice = agfstnode(g); vertice; vertice = agnxtnode(g, vertice))
+  for (ver = agfstnode(g); ver; ver = agnxtnode(g, ver))
   {
-    grau = agdegree(g, vertice, TRUE, TRUE);
+    grau = agdegree(g, ver, TRUE, TRUE);
     // printf("Grau %d", grau_maximo);
     if (grau > grau_maximo)
       grau_maximo = grau;
   }
 
-  printf("Grau máximo: %d\n", grau_maximo);
+  //printf("Grau máximo: %d\n", grau_maximo);
 
-  return 0;
+  return grau_maximo;
 }
 
 // OK-----------------------------------------------------------------------------
+// devolve o grau mínimo de g
+
 int grau_minimo(grafo g)
 {
 
-  Agnode_t *vertice;
+  Agnode_t *vertices;
   int grau_min, grau;
 
   // percorrendo os vértices
   grau = 1;
   grau_min = 1;
-  for (vertice = agfstnode(g); vertice; vertice = agnxtnode(g, vertice))
+  for (vertices = agfstnode(g); vertices; vertices = agnxtnode(g, vertices))
   {
-    grau_min = agdegree(g, vertice, TRUE, TRUE);
+    grau_min = agdegree(g, vertices, TRUE, TRUE);
     // printf("Grau %d", grau_min);
     if (grau < grau_min)
       grau_min = grau;
   }
 
-  printf("Grau min: %d\n", grau_min);
+  //printf("Grau mínimo: %d\n", grau_min);
 
-  return 0;
+  return grau_min;
 }
 
 // OK-----------------------------------------------------------------------------
+// devolve o grau médio de g
+
 int grau_medio(grafo g)
 {
 
-  Agnode_t *vertice;
+  Agnode_t *verti;
   int medio, v;
 
   // percorrendo os vértices
   v = 0;
   medio = 0;
-  for (vertice = agfstnode(g); vertice; vertice = agnxtnode(g, vertice))
+  for (verti = agfstnode(g); verti; verti = agnxtnode(g, verti))
   {
-    medio = agdegree(g, vertice, TRUE, TRUE) + medio;
+    medio = agdegree(g, verti, TRUE, TRUE) + medio;
     v++;
   }
   medio = medio / v;
 
-  printf("Grau medio: %d\n", medio);
+  //printf("Grau médio: %d\n", medio);
+
+  return medio;
 }
 
 // // -----------------------------------------------------------------------------
+// devolve 1 se g é regular, ou 0 caso contrário
+
 // int regular(grafo g) {
 
 //   return 0;
 // }
 
 // // -----------------------------------------------------------------------------
+// devolve 1 se g é completo, ou 0 caso contrário
+
 // int completo(grafo g) {
 // // da para usar a matriz de adjacencia pergutando se tudo menos a diagonal eh 1
 /*
@@ -182,18 +214,23 @@ int grau_medio(grafo g)
 // }
 
 // // -----------------------------------------------------------------------------
+// devolve 1 se g é conexo, ou 0 caso contrário
+
 // int conexo(grafo g) {
 
 //   return 0;
 // }
 
 // // -----------------------------------------------------------------------------
+// devolve 1 se g é bipartido, ou 0 caso contrário
+
 // int bipartido(grafo g) {
 
 //   return 0;
 // }
 
 // // -----------------------------------------------------------------------------
+// devolve o número de triângulos (subgrafos completos de 3 vértices) em g
 // int n_triangulos(grafo g) {
 
 //   return 0;
@@ -202,44 +239,44 @@ int grau_medio(grafo g)
 //-----------------------------------------------------------------------------
 //---------FUNÇÕES AUXILIARES PARA MATRIZ DE ADJANCÊNCIA-----------------------
 //-----------------------------------------------------------------------------
+
 int **aloca_matriz(int num)
 {
-  int **matriz, linha, coluna;
+  int **matriz;
 
   // aloca as linhas
-  matriz = malloc(sizeof(int *) * num);
+  // matriz = malloc(sizeof(int *) * num);
+  matriz = (int **) malloc(sizeof(int*)*num);
 
-  for (linha = 0; linha < num; linha++)
-  {
-
-    // coluna para cada linha
-    matriz[linha] = malloc(sizeof(int) * num);
-
-    // inicializando a matriz
-    for (coluna = 0; coluna < num; coluna++)
-    {
-      matriz[linha][coluna] = 0;
+  if(matriz){
+    for (int i=0; i < num; ++i) {
+      matriz[i] = (int *) malloc(sizeof(int)*num);
     }
   }
 
   if (!matriz)
   {
-    printf("Não foi possível alocar o grafo.\n");
+    printf("Não foi possível alocar a matriz....\n");
     return NULL;
   }
   else
-    printf("Alocado corretamente.\n\n");
+    //printf("Matriz alocada corretamente....\n\n");
 
   return matriz;
 }
 
+//-----------------------------------------------------------------------------
 int busca_posicao(char **v, char *value, int n)
 {
-  for (int i = 0; i < n; i++)
+  int i;
+
+
+  for (i = 0; i < n; i++)
     if (strcmp(v[i], value) == 0)
       return i;
 }
 
+//-----------------------------------------------------------------------------
 void print_v(int n, char **vertices)
 {
   printf(" ");
@@ -251,6 +288,7 @@ void print_v(int n, char **vertices)
   printf("\n");
 }
 
+//-----------------------------------------------------------------------------
 void print_adj_m(int **m, int n, char **vertices)
 {
   print_v(n, vertices);
@@ -268,8 +306,11 @@ void print_adj_m(int **m, int n, char **vertices)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-//https://www.ime.usp.br/~pf/algoritmos_para_grafos/aulas/graphdatastructs.html#sec:adjmatrix
+//OK-----------------------------------------------------------------------------
+// devolve uma matriz de adjacência de g onde as linhas/colunas
+// estão ordenadas do mesmo modo que agfstnode() e agnxtnode()
+// em libcgraph
+
 int **matriz_adjacencia(grafo g)
 {
   int num = n_vertices(g);
@@ -278,7 +319,7 @@ int **matriz_adjacencia(grafo g)
 
   char **values_v = (char *)malloc(num * sizeof(char *));
 
-  Agnode_t *v;
+  vertice v;
   int i = 0;
   // coloca os values do grafo como vetor para orientar ao valorar a matriz
   for (v = agfstnode(g); v; v = agnxtnode(g, v))
@@ -287,13 +328,13 @@ int **matriz_adjacencia(grafo g)
     i++;
   }
 
-  Agnode_t *vertice;
-  for (vertice = agfstnode(g); vertice; vertice = agnxtnode(g, vertice)) // vertices
+  vertice vert;
+  for (vert = agfstnode(g); vert; vert = agnxtnode(g, vert)) // vertices
   {
-    for (Agedge_t *aresta = agfstedge(g, vertice); aresta; aresta = agnxtedge(g, aresta, vertice)) // arestas do vertice
+    for (Agedge_t *aresta = agfstedge(g, vert); aresta; aresta = agnxtedge(g, aresta, vert)) // arestas do vertice
     {
-      Agnode_t *tail = NULL;
-      Agnode_t *head = NULL;
+      vertice tail = NULL;
+      vertice head = NULL;
 
       tail = agtail(aresta); // o vertice
       head = aghead(aresta); // o vizinho
@@ -305,60 +346,61 @@ int **matriz_adjacencia(grafo g)
       adj_m[busca_posicao(values_v, Shead, num)][busca_posicao(values_v, Stail, num)] = 1;
     }
   }
-  printf("num %d \n", num);
-  printf("\n");
+  //printf("num %d \n", num);
+  //printf("\n");
 
+  //printf("Matriz de adjacência\n");
   print_adj_m(adj_m, num, values_v);
   return adj_m;
 }
 
-// // -----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
 grafo complemento(grafo g)
 {
   int num = n_vertices(g);
 
   int **adj_m = matriz_adjacencia(g);
   int **compl_m = aloca_matriz(num);
+  int i = 0, j, k;
 
   char **values_v = (char *)malloc(num * sizeof(char *));
 
-  Agnode_t *v;
-  int i = 0;
+  vertice v;
   for (v = agfstnode(g); v; v = agnxtnode(g, v))
   {
     values_v[i] = agnameof(v);
     i++;
   }
   // faz a matriz de adjacencia do grafo complementar
-  for (int i = 0; i < num; i++)
+  for (i = 0; i < num; i++)
   {
-    for (int j = 0; j < i; j++)
+    for (j = 0; j < i; j++)
       if (adj_m[i][j] == 0)
         compl_m[i][j] = 1;
-    for (int k = i + 1; k < num; k++)
+    for (k = i + 1; k < num; k++)
       if (adj_m[i][k] == 0)
         compl_m[i][k] = 1;
   }
 
-  printf("num %d \n", num);
-  printf("\n");
+  //printf("num %d \n", num);
+  //printf("\n");
 
-  print_adj_m(compl_m, num, values_v);
-  Agraph_t  *graph_compl = agopen((char*)"G", Agstrictundirected, NULL);
+  //print_adj_m(compl_m, num, values_v);
+  grafo  graph_compl = agopen((char*)"G", Agstrictundirected, NULL);
 
-  //printf("to maluxo");
-  for (int i = 0; i < num; i++)
+  for (i = 0; i < num; i++)
   {
-    Agnode_t *x = agnode(graph_compl, values_v[i], TRUE);
-    for (int j = i + 1; j < num; j++)
+    vertice x = agnode(graph_compl, values_v[i], TRUE);
+    for ( j = i + 1; j < num; j++)
     {
       if (compl_m[i][j] == 1)
       {
-        Agnode_t *y = agnode(graph_compl, values_v[j], TRUE);
+        vertice y = agnode(graph_compl, values_v[j], TRUE);
         agedge(graph_compl, x, y, NULL, TRUE);
       }
     }
   }
-  agwrite(graph_compl, stdout);
-  return NULL;
+
+  return graph_compl;
 }
