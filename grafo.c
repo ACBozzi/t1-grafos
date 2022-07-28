@@ -135,17 +135,18 @@ int grau_minimo(grafo g)
   int grau_min, grau;
 
   // percorrendo os vértices
-  grau = 1;
+  grau = -1;
   grau_min = 1;
   for (vertices = agfstnode(g); vertices; vertices = agnxtnode(g, vertices))
   {
     grau_min = agdegree(g, vertices, TRUE, TRUE);
     // printf("Grau %d", grau_min);
+    if (grau == -1)
+      grau = grau_min;
     if (grau < grau_min)
       grau_min = grau;
+    
   }
-
-  //printf("Grau mínimo: %d\n", grau_min);
 
   return grau_min;
 }
@@ -174,25 +175,28 @@ int grau_medio(grafo g)
   return medio;
 }
 
-// -----------------------------------------------------------------------------
+//OK-----------------------------------------------------------------------------
 // devolve 1 se g é regular, ou 0 caso contrário
 
 int regular(grafo g) {
 
-  vertice ver;
+  vertice ver, ver2;
   int reg, v;
 
   // percorrendo os vértices
-
   for (ver = agfstnode(g); ver; ver = agnxtnode(g, ver))
   {
-    v = reg;
     reg = agdegree(g, ver, TRUE, TRUE);
-    // if(v!=reg){
-    //   return 0;
-    // }
   }
 
+  for (ver2 = agfstnode(g); ver2; ver2 = agnxtnode(g, ver2))
+  {
+    v = reg;  
+    reg = agdegree(g, ver2, TRUE, TRUE);
+    if(v!=reg){
+      return 0;
+    }
+  }
   return 1;
 }
 
@@ -364,7 +368,7 @@ int **matriz_adjacencia(grafo g)
   //printf("\n");
 
   //printf("Matriz de adjacência\n");
-  print_adj_m(adj_m, num, values_v);
+  //print_adj_m(adj_m, num, values_v);
   return adj_m;
 }
 
@@ -415,6 +419,8 @@ grafo complemento(grafo g)
       }
     }
   }
+
+  //agwrite(graph_compl, stdout);
 
   return graph_compl;
 }

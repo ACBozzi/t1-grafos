@@ -7,38 +7,43 @@ int main(void) {
 
   grafo g = le_grafo();
   
-
+//FINALIZADO-------------------------------------------------------------------
   //escreve_grafo(g);
 
+//FINALIZADO-------------------------------------------------------------------
   //destroi_grafo(g);
 
+//FINALIZADO-------------------------------------------------------------------
   // int numero_vertices;
   // numero_vertices = n_vertices(g);
   // printf("Numero de vertices %d: \n",numero_vertices);
 
+//FINALIZADO-------------------------------------------------------------------
   // int numero_arestas;
   // numero_arestas = n_arestas(g);
   // printf("Numero de arestas %d: \n",numero_arestas);
 
-
+//FINALIZADO-------------------------------------------------------------------
   // int grau_max;  
   // grau_max = grau_maximo(g);
-  // printf("Grau máximo %d: \n",grau_max);
+  // printf("Grau máximo: %d \n",grau_max);
 
+//FINALIZADO-------------------------------------------------------------------
   // int grau_min;
   // grau_min = grau_minimo(g);
-  // printf("Grau minimo %d: \n",grau_min);
+  // printf("Grau minimo: %d \n",grau_min);
 
-
+//FINALIZADO-------------------------------------------------------------------
   // int grau_med;
   // grau_med = grau_medio(g);
   // printf("Grau medio %d: \n",grau_med);
 
+//FINALIZADO-------------------------------------------------------------------
   // int grau_v;
   // grau_v = grau("PARNAIBA",g);
   // printf("Grau de B é %d: \n",grau_v);
 
-
+//CONFERIR-------------------------------------------------------------------
   // int **adjacencia;
   // int num_vertices,i,j;
   // num_vertices = n_vertices(g);
@@ -52,17 +57,19 @@ int main(void) {
   //   printf("\n");
   // }
 
-  //grafo complem =  complemento(g);
-  //escreve_grafo(complem);
+//FINALIZADO-------------------------------------------------------------------
+  // grafo complem =  complemento(g);
+  // escreve_grafo(complem);
 
-  int regul;
-  regul = regular(g);
-  if (regular == 1){
-    printf("É regular\n");
-  }else{
-    printf("Não é regular\n");
-  }
+//FINALIZADO-------------------------------------------------------------------
+  // int regul;
+  // regul = regular(g);
 
+  // if (regul == 1){
+  //   printf("É regular\n");
+  // }else{
+  //   printf("Não é regular\n");
+  // }
 
 
   return 0;

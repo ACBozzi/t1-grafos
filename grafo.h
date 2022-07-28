@@ -90,6 +90,6 @@ int **matriz_adjacencia(grafo g);
 //------------------------------------------------------------------------------
 // devolve o grafo complementar a g
 
-// grafo complemento(grafo g);
+grafo complemento(grafo g);
 
  #endif
