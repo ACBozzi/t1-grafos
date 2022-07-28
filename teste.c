@@ -34,23 +34,36 @@ int main(void) {
   // grau_med = grau_medio(g);
   // printf("Grau medio %d: \n",grau_med);
 
+  // int grau_v;
+  // grau_v = grau("PARNAIBA",g);
+  // printf("Grau de B é %d: \n",grau_v);
 
-  int **adjacencia;
-  int num_vertices,i,j;
-  num_vertices = n_vertices(g);
-  adjacencia =  aloca_matriz(num_vertices);
-  adjacencia = matriz_adjacencia(g);
 
-  for(i=0; i<num_vertices; i++){
-    for(j=0; j<num_vertices; j++){
-      printf(&adjacencia[i][j]);
-    }
-    printf("\n");
-  }
+  // int **adjacencia;
+  // int num_vertices,i,j;
+  // num_vertices = n_vertices(g);
+  // adjacencia =  aloca_matriz(num_vertices);
+  // adjacencia = matriz_adjacencia(g);
+
+  // for(i=0; i<num_vertices; i++){
+  //   for(j=0; j<num_vertices; j++){
+  //     printf(&adjacencia[i][j]);
+  //   }
+  //   printf("\n");
+  // }
 
   //grafo complem =  complemento(g);
-
   //escreve_grafo(complem);
+
+  int regul;
+  regul = regular(g);
+  if (regular == 1){
+    printf("É regular\n");
+  }else{
+    printf("Não é regular\n");
+  }
+
+
 
   return 0;
 }

@@ -84,21 +84,21 @@ int n_arestas(grafo g)
   return num_aresta;
 }
 
-// NÃO SOUBE TESTAR-----------------------------------------------------------------------------
-// ATENÇÃO: AQUI TALVEZ PRECISE USAR agnameof
-//  int grau(vertice v, grafo g) {
-//    int grau;
-//    vertice vert;
+//OK-----------------------------------------------------------------------------
+int grau(vertice v, grafo g) {
 
-//   //procura um nó no grafo
-//   vert = agnode (g,v,TRUE);
+ int grau;
+ vertice vert;
 
-//   //retorna o conjunto de arestas de um nó
-//   grau = agdegree(g,vert,TRUE,TRUE);
-//   printf("O grau do vértice v é: %d\n\n", grau);
+  //procura um nó no grafo
+  vert = agnode (g,v,TRUE);
 
-//   return 0;
-// }
+  //retorna o conjunto de arestas de um nó
+  grau = agdegree(g,vert,TRUE,TRUE);
+  //printf("O grau do vértice v é: %d\n\n", grau);
+
+  return grau;
+}
 
 // OK-----------------------------------------------------------------------------
 // devolve o grau máximo de g
@@ -106,7 +106,7 @@ int n_arestas(grafo g)
 int grau_maximo(grafo g)
 {
 
-  Agnode_t *ver;
+  vertice ver;
   int grau_maximo, grau;
 
   // percorrendo os vértices
@@ -131,7 +131,7 @@ int grau_maximo(grafo g)
 int grau_minimo(grafo g)
 {
 
-  Agnode_t *vertices;
+  vertice vertices;
   int grau_min, grau;
 
   // percorrendo os vértices
@@ -156,7 +156,7 @@ int grau_minimo(grafo g)
 int grau_medio(grafo g)
 {
 
-  Agnode_t *verti;
+  vertice verti;
   int medio, v;
 
   // percorrendo os vértices
@@ -174,13 +174,27 @@ int grau_medio(grafo g)
   return medio;
 }
 
-// // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // devolve 1 se g é regular, ou 0 caso contrário
 
-// int regular(grafo g) {
+int regular(grafo g) {
 
-//   return 0;
-// }
+  vertice ver;
+  int reg, v;
+
+  // percorrendo os vértices
+
+  for (ver = agfstnode(g); ver; ver = agnxtnode(g, ver))
+  {
+    v = reg;
+    reg = agdegree(g, ver, TRUE, TRUE);
+    // if(v!=reg){
+    //   return 0;
+    // }
+  }
+
+  return 1;
+}
 
 // // -----------------------------------------------------------------------------
 // devolve 1 se g é completo, ou 0 caso contrário
