@@ -15,9 +15,9 @@ int main(void) {
   //numero_arestas = n_arestas(g);
   //grau = grau_maximo(g);
   // grau = grau_minimo(g);
-  grau = grau_medio(g);
+  //grau = grau_medio(g);
 
-  //matriz_adjacencia(g);
+  complemento(g);
 
 
   return 0;
