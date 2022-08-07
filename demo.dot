@@ -1,6 +1,15 @@
 digraph G{
-	A -> B {label="10"}
-	A -> C {label="10"}
-	B -> C {label="1"}
-	C -> D {label="1"}
+	A -> B {label="1"} 
+	A -> C {label="1"} 
+	A -> D {label="1"}
+	B -> E {label="1"}
+	B -> F {label="1"}
+	D -> I {label="1"}
+	D -> J {label="1"}
+	D -> U {label="1"}
+	U -> K {label="1"}
+	U -> P {label="1"}
+	K -> N {label="1"}
+	K -> M {label="1"}
+	M -> A {label="1"}
 }
