@@ -60,25 +60,25 @@ int grau_medio(grafo g);
 
 int regular(grafo g);
 
-// //------------------------------------------------------------------------------
-// // devolve 1 se g é completo, ou 0 caso contrário
+//------------------------------------------------------------------------------
+// devolve 1 se g é completo, ou 0 caso contrário
 
-// int completo(grafo g);
+int completo(grafo g);
 
-// //------------------------------------------------------------------------------
-// // devolve 1 se g é conexo, ou 0 caso contrário
+//------------------------------------------------------------------------------
+// devolve 1 se g é conexo, ou 0 caso contrário
 
-// int conexo(grafo g);
+int conexo(grafo g);
 
-// //------------------------------------------------------------------------------
-// // devolve 1 se g é bipartido, ou 0 caso contrário
+//------------------------------------------------------------------------------
+// devolve 1 se g é bipartido, ou 0 caso contrário
 
 // int bipartido(grafo g);
 
-// //------------------------------------------------------------------------------
-// // devolve o número de triângulos (subgrafos completos de 3 vértices) em g
+//------------------------------------------------------------------------------
+// devolve o número de triângulos (subgrafos completos de 3 vértices) em g
 
-// int n_triangulos(grafo g);
+int n_triangulos(grafo g);
 
 //------------------------------------------------------------------------------
 // devolve uma matriz de adjacência de g onde as linhas/colunas

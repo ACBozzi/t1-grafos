@@ -6,12 +6,17 @@
 // https://www.mankier.com/3/cgraph
 // https://www.graphviz.org/pdf/cgraph.pdf
 // https://www.ime.usp.br/~pf/algoritmos_para_grafos/aulas/graphdatastructs.html#sec:adjmatrix
+// https://graphonline.ru/pt/
 
 //-----------------------FUNÇÕES AUXILIARES--------------------------------------
 int **aloca_matriz(int num);
 int busca_posicao(char **v, char *value, int n);
 void print_v(int n, char **vertices);
 void print_adj_m(int **m, int n, char **vertices);
+void insere_nodo_deep(char **v);
+void b_largura(int i, int size, int *visitado, int **matriz_adjacencia);
+int **mat_mult(int tam, int **matriz1, int **matriz2);
+
 //------------------------------------------------------------------------------
 
 // OK------------------------------------------------------------------------------
@@ -202,7 +207,7 @@ int regular(grafo g)
   return 1;
 }
 
-// OK // -----------------------------------------------------------------------------
+//OK-----------------------------------------------------------------------------
 //  devolve 1 se g é completo, ou 0 caso contrário
 
 int completo(grafo g)
@@ -223,7 +228,7 @@ int completo(grafo g)
   }
 
   // verifica se a matriz eh completa
-  for (int i = 0; i < num; i++)
+  for (i = 0; i < num; i++)
   {
     for (int j = i + 1; j < num; j++)
       if (adj_m[i][j] == 0)
@@ -232,150 +237,194 @@ int completo(grafo g)
   return 1;
 }
 
-// ARVORE
-typedef struct nodo
-{
-  char **value;
-  no *pai;
-  no *pfilho; // primeiro filho
-  no *prox_irmao
-} no;
 
-no *aloca_nodo() {}
+//-----------------------------------------------------------------------------
+//---------FUNÇÕES AUXILIARES PARA CONEXO--------------------------------------
+//-----------------------------------------------------------------------------
 
-void insere_nodo_deep(char **v)
-{
-  no *n = (no *)malloc(sizeof(no));
-  n->value = v;
-  n->pai;
-  n->pfilho; // primeiro filho
-  n->prox_irmao
+
+void b_largura(int pos, int n_vert, int *visitado, int **matriz_adjacencia)
+{  
+  int j;
+  visitado[pos] = 1; 
+
+  for(j = 0; j < n_vert; j++){
+    if (matriz_adjacencia[pos][j] == 1 && !visitado[j])
+      b_largura(j, n_vert, visitado, matriz_adjacencia);
+  }
 }
 
-void insere_nodo_normal() {}
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
-// CRIA ARVORE GERADORA
-// BUSCA UM CAMINHO DO VERTICE A PARA O B USANDO BUSCA DE PROFUNDIDADE
-//  // -----------------------------------------------------------------------------
+
+//OK-----------------------------------------------------------------------------
 //  devolve 1 se g é conexo, ou 0 caso contrário
-//  https://mathworld.wolfram.com/ConnectedGraph.html#:~:text=A%20connected%20graph%20is%20graph,connected%2C%20while%20empty%20graphs%20on
+//https://www.ime.usp.br/~pf/algoritmos_para_grafos/aulas/components.html
 int conexo(grafo g)
 {
-  int num = n_vertices(g);
+  int **matriz_adj, *visitado, n_vert, n_componentes, pos;
+  
+  n_componentes = 0;
+  n_vert = n_vertices(g);
+  matriz_adj = matriz_adjacencia(g);
+  visitado = malloc( ((unsigned int) n_vert) *sizeof(int));
 
-  int i = 0;
+  //todo vértice será ainda visitado
+  for(pos = 0; pos < n_vert; pos++)
+    visitado[pos] = 0;
 
-  char **values_v = (char *)malloc(num * sizeof(char *));
-  int *explorados = (int *)malloc(num * sizeof(int));
-
-  vertice v;
-  for (v = agfstnode(g); v; v = agnxtnode(g, v))
-  {
-    values_v[i] = agnameof(v);
-    explorados[i] = 0;
-    i++;
-  }
-
-  vertice vert;
-  i = 0;
-  explorados[0] = 1;
-  //aqui deve gerar a arvore
-  for (vert = agfstnode(g); vert; vert = agnxtnode(g, vert)) // vertices
-  {
-    for (Agedge_t *aresta = agfstedge(g, vert); aresta; aresta = agnxtedge(g, aresta, vert)) // arestas do vertice
-    {
-      vertice tail = NULL;
-      vertice head = NULL;
-
-      tail = agtail(aresta); // o vertice
-      head = aghead(aresta); // o vizinho
-
-      char *Stail = agnameof(tail);
-      char *Shead = agnameof(head);
-      if (vert == tail) // garantir q so entra pai -> filho
-      {
-        // caso o vizinho tenha a msm cor ou ja tenha sido colorido pois dai nao sera uma arvore(simplifiquei para se ja foi explorado)
-        if (explorados[busca_posicao(values_v, Shead, num)] == 1)
-        {
-          return 0; // caso ele ja tenha sido explorado
-        }
-        else
-        {
-          explorados[busca_posicao(values_v, Shead, num)] = 1; // coloca como explorado
-        }
-
-        // printf("%s explorado: %d -> %s explorado: %d \n", values_v[busca_posicao(values_v, Stail, num)], explorados[busca_posicao(values_v, Stail, num)], values_v[busca_posicao(values_v, Shead, num)], explorados[busca_posicao(values_v, Shead, num)]);
+  // para todo vértice não visitado verificar
+  for(pos = 0; pos < n_vert; pos++){
+    if(visitado[pos] == 0){
+      //passa o vetor pra busca
+      b_largura(pos, n_vert, visitado, matriz_adj);
+      //se algum não foi visitado aumenta componente
+      n_componentes++;
+      if(n_componentes > 1){
+        return 0;
       }
     }
-    i++;
   }
 
-  //aqui seria a busca on teria que achar todos os nodos apartir da raiz pois assim confirma a conexidade
   return 1;
-  return 0;
 }
 
-// // -----------------------------------------------------------------------------
+// //CORRIGIR-----------------------------------------------------------------------------
 // devolve 1 se g é bipartido, ou 0 caso contrário
 // https://www.geeksforgeeks.org/bipartite-graph/
-int bipartido(grafo g)
-{
-  int num = n_vertices(g);
+// int bipartido(grafo g)
+// {
+//   int num = n_vertices(g);
 
-  int i = 0;
+//   int i = 0;
 
-  char **values_v = (char *)malloc(num * sizeof(char *));
-  int *explorados = (int *)malloc(num * sizeof(int));
+//   char **values_v = (char *)malloc(num * sizeof(char *));
+//   int *explorados = (int *)malloc(num * sizeof(int));
 
-  vertice v;
-  for (v = agfstnode(g); v; v = agnxtnode(g, v))
-  {
-    values_v[i] = agnameof(v);
-    explorados[i] = 0;
-    i++;
-  }
+//   vertice v;
+//   for (v = agfstnode(g); v; v = agnxtnode(g, v))
+//   {
+//     values_v[i] = agnameof(v);
+//     explorados[i] = 0;
+//     i++;
+//   }
 
-  vertice vert;
-  i = 0;
-  explorados[0] = 1;
-  for (vert = agfstnode(g); vert; vert = agnxtnode(g, vert)) // vertices
-  {
-    for (Agedge_t *aresta = agfstedge(g, vert); aresta; aresta = agnxtedge(g, aresta, vert)) // arestas do vertice
-    {
-      vertice tail = NULL;
-      vertice head = NULL;
+//   vertice vert;
+//   i = 0;
+//   explorados[0] = 1;
+//   for (vert = agfstnode(g); vert; vert = agnxtnode(g, vert)) // vertices
+//   {
+//     for (Agedge_t *aresta = agfstedge(g, vert); aresta; aresta = agnxtedge(g, aresta, vert)) // arestas do vertice
+//     {
+//       vertice tail = NULL;
+//       vertice head = NULL;
 
-      tail = agtail(aresta); // o vertice
-      head = aghead(aresta); // o vizinho
+//       tail = agtail(aresta); // o vertice
+//       head = aghead(aresta); // o vizinho
 
-      char *Stail = agnameof(tail);
-      char *Shead = agnameof(head);
-      if (vert == tail) // garantir q so entra pai -> filho
-      {
-        // caso o vizinho tenha a msm cor ou ja tenha sido colorido pois dai nao sera uma arvore(simplifiquei para se ja foi explorado)
-        if (explorados[busca_posicao(values_v, Shead, num)] == 1)
-        {
-          return 0; // caso ele ja tenha sido explorado
-        }
-        else
-        {
-          explorados[busca_posicao(values_v, Shead, num)] = 1; // coloca como explorado
-        }
+//       char *Stail = agnameof(tail);
+//       char *Shead = agnameof(head);
+//       if (vert == tail) // garantir q so entra pai -> filho
+//       {
+//         // caso o vizinho tenha a msm cor ou ja tenha sido colorido pois dai nao sera uma arvore(simplifiquei para se ja foi explorado)
+//         if (explorados[busca_posicao(values_v, Shead, num)] == 1)
+//         {
+//           return 0; // caso ele ja tenha sido explorado
+//         }
+//         else
+//         {
+//           explorados[busca_posicao(values_v, Shead, num)] = 1; // coloca como explorado
+//         }
 
-        // printf("%s explorado: %d -> %s explorado: %d \n", values_v[busca_posicao(values_v, Stail, num)], explorados[busca_posicao(values_v, Stail, num)], values_v[busca_posicao(values_v, Shead, num)], explorados[busca_posicao(values_v, Shead, num)]);
+//         // printf("%s explorado: %d -> %s explorado: %d \n", values_v[busca_posicao(values_v, Stail, num)], explorados[busca_posicao(values_v, Stail, num)], values_v[busca_posicao(values_v, Shead, num)], explorados[busca_posicao(values_v, Shead, num)]);
+//       }
+//     }
+//     i++;
+//   }
+//   return 1;
+// }
+
+//-----------------------------------------------------------------------------
+//---------FUNÇÕES AUXILIARES PARA NUMERO TRIANGULOS---------------------------
+//-----------------------------------------------------------------------------
+
+//quadrado de uma matriz
+int **mat_mult(int tam, int **matriz1, int **matriz2){
+
+  int **mat_quadrada = aloca_matriz(tam);
+  int linha, coluna,aux;
+
+  int soma = 0;
+
+  for (linha = 0; linha < tam; linha++){
+    for (coluna = 0; coluna<tam ;coluna++){
+      mat_quadrada[linha][coluna] = 0;
+      soma = 0;
+      for(aux = 0; aux < tam; aux++){
+        soma += matriz1[linha][aux] * matriz2[aux][linha];
       }
+      mat_quadrada[linha][coluna]+=soma;
     }
-    i++;
   }
-  return 1;
+
+  print_mtx(mat_quadrada,tam);
+
+  return mat_quadrada;
 }
 
-// // -----------------------------------------------------------------------------
-// devolve o número de triângulos (subgrafos completos de 3 vértices) em g
-// int n_triangulos(grafo g) {
+void print_mtx(int **m, int tam) {
 
-//   return 0;
-// }
+  for (int i = 0; i < tam; i++) {
+    for (int j = 0; j < tam; j++) {
+      printf("%d ", m[i][j]);
+    }
+    printf("\n");
+    }
+}
+
+//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+// devolve o número de triângulos (subgrafos completos de 3 vértices) em g
+//https://www.geeksforgeeks.org/number-of-triangles-in-a-undirected-graph/
+
+int n_triangulos(grafo g) {
+
+  int n_nos,trace, n_tri, i;
+
+  int **matriz1 = matriz_adjacencia(g);
+  int **matriz2 = matriz_adjacencia(g);
+
+  n_nos = agnnodes(g);
+
+  //faz matriz de adjacencia ao quadrado
+  matriz2 = mat_mult(n_nos,matriz1,matriz2);
+  
+  //faz agora ao cubo
+  matriz2 = mat_mult(n_nos,matriz1,matriz2);
+
+  //traço
+  trace = 0;
+  for (i = 0; i < n_nos; ++i)
+  {
+    printf("Matriz[%d][%d] : %d\n",i,i,matriz2[i][i]);
+    trace +=matriz2[i][i];
+    printf("Trace:%d\n", trace);
+  }
+
+  //divide por 2 porque é não direcionado
+  n_tri = (trace / 6);
+  //divide por 3 porque é 3 vértice pra um triangulo
+  // n_tri = (n_tri/3);
+
+
+  return n_tri;
+}
 
 //-----------------------------------------------------------------------------
 //---------FUNÇÕES AUXILIARES PARA MATRIZ DE ADJANCÊNCIA-----------------------
@@ -413,9 +462,11 @@ int busca_posicao(char **v, char *value, int n)
 {
   int i;
 
-  for (i = 0; i < n; i++)
+  for (i = 0; i < n; i++){
     if (strcmp(v[i], value) == 0)
       return i;
+  }
+  return i;
 }
 
 //-----------------------------------------------------------------------------
@@ -488,11 +539,6 @@ int **matriz_adjacencia(grafo g)
       adj_m[busca_posicao(values_v, Shead, num)][busca_posicao(values_v, Stail, num)] = 1;
     }
   }
-  // printf("num %d \n", num);
-  // printf("\n");
-
-  // printf("Matriz de adjacência\n");
-  // print_adj_m(adj_m, num, values_v);
   return adj_m;
 }
 

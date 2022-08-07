@@ -71,10 +71,40 @@ int main(void) {
   //   printf("Não é regular\n");
   // }
 
-  //FINALIZADO-------------------------------------------------------------------
-  // printf("completo?: %d \n", completo(g));
+//FINALIZADO---------------------------------------------------------------------
+  // int comple;
+  // comple = completo(g);
+  // printf("Completo %d\n", comple);
+  // if (comple == 1){
+  //   printf("O grafo é completo\n");
+  // }else{
+  //   printf("O grafo não é completo\n");
+  // }
 
-  //TESTAR-----------------------------------------------------------------------
-  //printf("bipartido?: %d \n", bipartido(g));
+//CORRIGIR-----------------------------------------------------------------------
+  // int bipart;
+  // bipart = bipartido(g);
+  // printf("Bipart %d\n", bipart);
+  // if (bipart == 1){
+  //   printf("O grafo é bipartido\n");
+  // }else{
+  //   printf("O grafo não é bipartido\n");
+  // }
+
+//FINALIZADO-----------------------------------------------------------------------
+  // int cnx;
+  // cnx = conexo(g);
+  // printf("cnx %d\n", cnx);
+  // if (cnx == 1){
+  //   printf("O grafo é conexo\n");
+  // }else{
+  //   printf("O grafo não é conexo\n");
+  // }
+
+//FINALIZADO-----------------------------------------------------------------------
+  int tri;
+  tri = n_triangulos(g);
+  printf("Número de triangulos %d\n", tri);
+
   return 0;
 }
