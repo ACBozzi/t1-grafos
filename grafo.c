@@ -16,6 +16,7 @@ void print_adj_m(int **m, int n, char **vertices);
 void insere_nodo_deep(char **v);
 void b_largura(int i, int size, int *visitado, int **matriz_adjacencia);
 int **mat_mult(int tam, int **matriz1, int **matriz2);
+void print_mtx(int **m, int tam);
 
 //------------------------------------------------------------------------------
 
@@ -50,7 +51,7 @@ grafo le_grafo(void)
 
 void destroi_grafo(grafo g)
 {
-  agclose(g);
+  agfree(g, NULL);
   // free(g);
   // return 1;
 }
@@ -72,7 +73,6 @@ int n_vertices(grafo g)
 {
   int num_vert;
   num_vert = agnnodes(g);
-  // printf("Número de vértices do grafo é: %d\n\n", num_vert);
   return num_vert;
 }
 
@@ -83,7 +83,6 @@ int n_arestas(grafo g)
 {
   int num_aresta;
   num_aresta = agnedges(g);
-  // printf("Número de arestas do grafo é: %d\n\n", num_aresta);
 
   return num_aresta;
 }
@@ -125,7 +124,6 @@ int grau_maximo(grafo g)
       grau_maximo = grau;
   }
 
-  // printf("Grau máximo: %d\n", grau_maximo);
 
   return grau_maximo;
 }
@@ -288,63 +286,67 @@ int conexo(grafo g)
     }
   }
 
+  free(matriz_adj);
+  free(visitado);
+
   return 1;
 }
 
 // //CORRIGIR-----------------------------------------------------------------------------
 // devolve 1 se g é bipartido, ou 0 caso contrário
 // https://www.geeksforgeeks.org/bipartite-graph/
-// int bipartido(grafo g)
-// {
-//   int num = n_vertices(g);
+// https://www.baeldung.com/cs/graphs-bipartite
+int bipartido(grafo g)
+{
+  int num = n_vertices(g);
 
-//   int i = 0;
+  int i = 0;
 
-//   char **values_v = (char *)malloc(num * sizeof(char *));
-//   int *explorados = (int *)malloc(num * sizeof(int));
+  char **values_v = (char *)malloc(num * sizeof(char *));
+  int *v_cores = (int *)malloc(num * sizeof(int));
 
-//   vertice v;
-//   for (v = agfstnode(g); v; v = agnxtnode(g, v))
-//   {
-//     values_v[i] = agnameof(v);
-//     explorados[i] = 0;
-//     i++;
-//   }
+  vertice v;
+  for (v = agfstnode(g); v; v = agnxtnode(g, v))
+  {
+    values_v[i] = agnameof(v);
+    v_cores[i] = -1;
+    i++;
+  }
 
-//   vertice vert;
-//   i = 0;
-//   explorados[0] = 1;
-//   for (vert = agfstnode(g); vert; vert = agnxtnode(g, vert)) // vertices
-//   {
-//     for (Agedge_t *aresta = agfstedge(g, vert); aresta; aresta = agnxtedge(g, aresta, vert)) // arestas do vertice
-//     {
-//       vertice tail = NULL;
-//       vertice head = NULL;
+  vertice vert;
+  i = 0;
+  v_cores[0] = 0;
+  for (vert = agfstnode(g); vert; vert = agnxtnode(g, vert)) // vertices
+  {
+    for (Agedge_t *aresta = agfstedge(g, vert); aresta; aresta = agnxtedge(g, aresta, vert)) // arestas do vertice
+    {
+      vertice tail = NULL;
+      vertice head = NULL;
 
-//       tail = agtail(aresta); // o vertice
-//       head = aghead(aresta); // o vizinho
+      tail = agtail(aresta); // o vertice
+      head = aghead(aresta); // o vizinho
 
-//       char *Stail = agnameof(tail);
-//       char *Shead = agnameof(head);
-//       if (vert == tail) // garantir q so entra pai -> filho
-//       {
-//         // caso o vizinho tenha a msm cor ou ja tenha sido colorido pois dai nao sera uma arvore(simplifiquei para se ja foi explorado)
-//         if (explorados[busca_posicao(values_v, Shead, num)] == 1)
-//         {
-//           return 0; // caso ele ja tenha sido explorado
-//         }
-//         else
-//         {
-//           explorados[busca_posicao(values_v, Shead, num)] = 1; // coloca como explorado
-//         }
+      char *Stail = agnameof(tail);
+      char *Shead = agnameof(head);
+      if (vert == tail) // garantir q so entra pai -> filho
+      {
+        // caso o vizinho tenha a msm cor ou ja tenha sido colorido pois dai nao sera uma arvore(simplifiquei para se ja foi explorado)
+        if(v_cores[busca_posicao(values_v, Shead, num)] == -1){
+          v_cores[busca_posicao(values_v, Shead, num)] = v_cores[busca_posicao(values_v, Stail, num)] == 0 ? 1 : 0;
+        }
+        else
+        {
+          if(v_cores[busca_posicao(values_v, Shead, num)] == v_cores[busca_posicao(values_v, Stail, num)])
+            return 0;
+        }
 
-//         // printf("%s explorado: %d -> %s explorado: %d \n", values_v[busca_posicao(values_v, Stail, num)], explorados[busca_posicao(values_v, Stail, num)], values_v[busca_posicao(values_v, Shead, num)], explorados[busca_posicao(values_v, Shead, num)]);
-//       }
-//     }
-//     i++;
-//   }
-//   return 1;
-// }
+        //printf("%s cor: %d -> %s cor: %d \n", values_v[busca_posicao(values_v, Stail, num)], v_cores[busca_posicao(values_v, Stail, num)], values_v[busca_posicao(values_v, Shead, num)], v_cores[busca_posicao(values_v, Shead, num)]);
+      }
+    }
+    i++;
+  }
+  return 1;
+}
 
 //-----------------------------------------------------------------------------
 //---------FUNÇÕES AUXILIARES PARA NUMERO TRIANGULOS---------------------------
@@ -369,12 +371,12 @@ int **mat_mult(int tam, int **matriz1, int **matriz2){
     }
   }
 
-  print_mtx(mat_quadrada,tam);
-
   return mat_quadrada;
 }
 
 void print_mtx(int **m, int tam) {
+
+  //printf("matriz quadrada\n");
 
   for (int i = 0; i < tam; i++) {
     for (int j = 0; j < tam; j++) {
@@ -382,6 +384,8 @@ void print_mtx(int **m, int tam) {
     }
     printf("\n");
     }
+
+    printf("fim\n\n");
 }
 
 //-----------------------------------------------------------------------------
@@ -412,18 +416,16 @@ int n_triangulos(grafo g) {
   trace = 0;
   for (i = 0; i < n_nos; ++i)
   {
-    printf("Matriz[%d][%d] : %d\n",i,i,matriz2[i][i]);
     trace +=matriz2[i][i];
-    printf("Trace:%d\n", trace);
   }
 
-  //divide por 2 porque é não direcionado
   n_tri = (trace / 6);
-  //divide por 3 porque é 3 vértice pra um triangulo
-  // n_tri = (n_tri/3);
 
+  free(matriz1);
+  free(matriz2);
 
-  return n_tri;
+  return n_tri-1;
+
 }
 
 //-----------------------------------------------------------------------------
@@ -451,10 +453,13 @@ int **aloca_matriz(int num)
     printf("Não foi possível alocar a matriz....\n");
     return NULL;
   }
-  else
-    // printf("Matriz alocada corretamente....\n\n");
+  for (int j = 0; j < num; j++){
+    for (int k = 0; k < num; k++){
+      matriz[j][k] = 0;
+    }
+  }
 
-    return matriz;
+  return matriz;
 }
 
 //-----------------------------------------------------------------------------
@@ -498,6 +503,9 @@ void print_adj_m(int **m, int n, char **vertices)
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
+
+
+
 
 // OK-----------------------------------------------------------------------------
 //  devolve uma matriz de adjacência de g onde as linhas/colunas
@@ -571,10 +579,6 @@ grafo complemento(grafo g)
         compl_m[i][k] = 1;
   }
 
-  // printf("num %d \n", num);
-  // printf("\n");
-
-  // print_adj_m(compl_m, num, values_v);
   grafo graph_compl = agopen((char *)"G", Agstrictundirected, NULL);
 
   for (i = 0; i < num; i++)

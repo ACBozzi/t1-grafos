@@ -73,7 +73,7 @@ int conexo(grafo g);
 //------------------------------------------------------------------------------
 // devolve 1 se g é bipartido, ou 0 caso contrário
 
-// int bipartido(grafo g);
+int bipartido(grafo g);
 
 //------------------------------------------------------------------------------
 // devolve o número de triângulos (subgrafos completos de 3 vértices) em g
