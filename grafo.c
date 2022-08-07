@@ -1,3 +1,11 @@
+//##################################################################
+//Trabalho referente a discuplina de GRAFOS                        #
+//                                                                 #
+//Autores: Anna Caroline Bozzi                  GRR 20173532       #
+//         Jose Guilherme de Oliveira Pedroso   GRR 20182958       #
+//###################################################################
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -593,8 +601,6 @@ grafo complemento(grafo g)
       }
     }
   }
-
-  // agwrite(graph_compl, stdout);
 
   return graph_compl;
 }
